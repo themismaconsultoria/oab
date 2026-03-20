@@ -3,6 +3,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell, Tooltip } from "recharts";
 import { useMemo } from "react";
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
+import { exportarQuestoesPDF } from "@/lib/pdf-export";
 
 export default function RadarPage() {
   const hero = useScrollReveal();
@@ -88,6 +91,16 @@ export default function RadarPage() {
           <span className="text-xs bg-warning/15 text-warning px-2 py-0.5 rounded-full font-medium tabular-nums">
             {clonesDetectados.length} detectados
           </span>
+          {clonesDetectados.length > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="ml-auto active:scale-[0.97]"
+              onClick={() => exportarQuestoesPDF(clonesDetectados, "Clones Detectados - JurisVision", "clones-jurisvision.pdf")}
+            >
+              <Download className="h-3.5 w-3.5 mr-1.5" /> PDF
+            </Button>
+          )}
         </div>
 
         {clonesDetectados.length > 0 ? (

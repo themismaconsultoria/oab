@@ -4,7 +4,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
-import { Search, FileText } from "lucide-react";
+import { Search, FileText, Download } from "lucide-react";
+import { exportarQuestoesPDF } from "@/lib/pdf-export";
 
 export default function BuscadorPage() {
   const [termo, setTermo] = useState("");
@@ -49,11 +50,23 @@ export default function BuscadorPage() {
       </div>
 
       {searched && (
-        <p className={`text-sm mb-4 font-medium ${resultados.length > 0 ? "text-success" : "text-destructive"}`}>
-          {resultados.length > 0
-            ? `${resultados.length} questão(ões) encontrada(s) sobre "${termo}"`
-            : `Nenhum resultado para "${termo}"`}
-        </p>
+        <div className="flex items-center justify-between mb-4">
+          <p className={`text-sm font-medium ${resultados.length > 0 ? "text-success" : "text-destructive"}`}>
+            {resultados.length > 0
+              ? `${resultados.length} questão(ões) encontrada(s) sobre "${termo}"`
+              : `Nenhum resultado para "${termo}"`}
+          </p>
+          {resultados.length > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="active:scale-[0.97]"
+              onClick={() => exportarQuestoesPDF(resultados, `Busca: "${termo}" - JurisVision`, `busca-${termo}.pdf`)}
+            >
+              <Download className="h-3.5 w-3.5 mr-1.5" /> Exportar PDF
+            </Button>
+          )}
+        </div>
       )}
 
       <div className="space-y-3">
