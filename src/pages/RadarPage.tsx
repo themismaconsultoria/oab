@@ -91,6 +91,16 @@ export default function RadarPage() {
           <span className="text-xs bg-warning/15 text-warning px-2 py-0.5 rounded-full font-medium tabular-nums">
             {clonesDetectados.length} detectados
           </span>
+          {clonesDetectados.length > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="ml-auto active:scale-[0.97]"
+              onClick={() => exportarQuestoesPDF(clonesDetectados, "Clones Detectados - JurisVision", "clones-jurisvision.pdf")}
+            >
+              <Download className="h-3.5 w-3.5 mr-1.5" /> PDF
+            </Button>
+          )}
         </div>
 
         {clonesDetectados.length > 0 ? (
