@@ -171,6 +171,10 @@ export default function SimuladoPage() {
                   </button>
                 ))}
               </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                <Clock className="inline h-3 w-3 mr-1" />
+                Tempo: {formatTime(getTimeForQuestions(numQuestoes))} (~3 min/questão, padrão OAB)
+              </p>
             </CardContent>
           </Card>
 
