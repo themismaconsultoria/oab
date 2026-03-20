@@ -60,7 +60,59 @@ export default function SimuladoPage() {
     }
   };
 
-  if (state === "idle") {
+  const exportarPDF = () => {
+    const doc = new jsPDF();
+    const pageW = doc.internal.pageSize.getWidth();
+    const margin = 16;
+    const maxW = pageW - margin * 2;
+    let y = 20;
+
+    const addText = (text: string, size: number, bold: boolean = false) => {
+      doc.setFontSize(size);
+      doc.setFont("helvetica", bold ? "bold" : "normal");
+      const lines = doc.splitTextToSize(text, maxW);
+      const lineH = size * 0.45;
+      if (y + lines.length * lineH > 275) {
+        doc.addPage();
+        y = 20;
+      }
+      doc.text(lines, margin, y);
+      y += lines.length * lineH + 2;
+    };
+
+    const percent = Math.round((acertos / questoes.length) * 100);
+
+    // Header
+    doc.setTextColor(40, 40, 40);
+    addText("JurisVision OAB - Resultado do Simulado", 16, true);
+    addText(`Data: ${new Date().toLocaleDateString("pt-BR")}`, 10);
+    y += 4;
+    addText(`Acertos: ${acertos} / ${questoes.length}  (${percent}%)`, 12, true);
+    addText(percent >= 60 ? "Status: APROVADO" : "Status: REPROVADO (corte: 60%)", 12, true);
+    y += 6;
+
+    if (erros.length > 0) {
+      doc.setDrawColor(200, 200, 200);
+      doc.line(margin, y, pageW - margin, y);
+      y += 8;
+      addText("QUESTOES ERRADAS", 14, true);
+      y += 2;
+
+      erros.forEach((e, i) => {
+        addText(`${i + 1}. ${e.questao}`, 10);
+        doc.setTextColor(0, 130, 70);
+        addText(`   Resposta correta: ${e.correta}`, 10, true);
+        doc.setTextColor(180, 50, 50);
+        addText(`   Sua resposta: ${e.justificativa}`, 10);
+        doc.setTextColor(40, 40, 40);
+        y += 4;
+      });
+    }
+
+    doc.save("simulado-jurisvision.pdf");
+  };
+
+
     return (
       <div className="p-6 md:p-10 max-w-3xl mx-auto">
         <div ref={hero.ref} style={hero.style}>
