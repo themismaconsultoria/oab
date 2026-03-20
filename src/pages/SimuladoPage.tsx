@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { optionButtonClass, optionCorrectClass, optionWrongClass } from "@/components/AppButton";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
-import { ArrowRight, RotateCcw, Trophy, XCircle, CheckCircle2, Crosshair, Download } from "lucide-react";
+import { ArrowRight, RotateCcw, Trophy, XCircle, CheckCircle2, Crosshair, Download, Clock } from "lucide-react";
 import { jsPDF } from "jspdf";
 
 type SimuladoState = "idle" | "running" | "feedback" | "result";
