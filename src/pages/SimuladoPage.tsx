@@ -65,6 +65,8 @@ export default function SimuladoPage() {
     setErros([]);
     setSelected(null);
     setShowFeedback(false);
+    setTimeLeft(getTimeForQuestions(numQuestoes));
+    setTimerActive(true);
     setState("running");
   }, [numQuestoes]);
 
