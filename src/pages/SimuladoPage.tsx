@@ -250,14 +250,22 @@ export default function SimuladoPage() {
   // Running state
   return (
     <div className="p-6 md:p-10 max-w-3xl mx-auto">
-      {/* Progress header */}
+      {/* Timer + Progress header */}
       <div className="flex items-center justify-between mb-2">
         <p className="text-xs text-muted-foreground font-mono">
           Questão {index + 1}/{questoes.length}
         </p>
-        <p className="text-xs text-muted-foreground tabular-nums">
-          {acertos} acertos · {erros.length} erros
-        </p>
+        <div className="flex items-center gap-4">
+          <p className="text-xs text-muted-foreground tabular-nums">
+            {acertos} acertos · {erros.length} erros
+          </p>
+          <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md font-mono text-xs tabular-nums ${
+            timeLeft < 300 ? "bg-destructive/15 text-destructive animate-pulse-bar" : "bg-secondary text-foreground"
+          }`}>
+            <Clock className="h-3 w-3" />
+            {formatTime(timeLeft)}
+          </div>
+        </div>
       </div>
       <Progress value={((index + 1) / questoes.length) * 100} className="h-1.5 mb-6" />
 
