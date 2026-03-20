@@ -3,6 +3,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell, Tooltip } from "recharts";
 import { useMemo } from "react";
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
+import { exportarQuestoesPDF } from "@/lib/pdf-export";
 
 export default function RadarPage() {
   const hero = useScrollReveal();
