@@ -85,6 +85,7 @@ export default function SimuladoPage() {
 
   const proxima = () => {
     if (index + 1 >= questoes.length) {
+      setTimerActive(false);
       setState("result");
     } else {
       setIndex(i => i + 1);
