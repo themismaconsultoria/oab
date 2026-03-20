@@ -196,9 +196,14 @@ export default function SimuladoPage() {
             </Card>
           )}
 
-          <Button onClick={() => setState("idle")} variant="outline" className="active:scale-[0.97]">
-            <RotateCcw className="h-4 w-4 mr-2" /> Novo Simulado
-          </Button>
+          <div className="flex gap-3 justify-center flex-wrap">
+            <Button onClick={exportarPDF} className="active:scale-[0.97]">
+              <Download className="h-4 w-4 mr-2" /> Exportar PDF
+            </Button>
+            <Button onClick={() => setState("idle")} variant="outline" className="active:scale-[0.97]">
+              <RotateCcw className="h-4 w-4 mr-2" /> Novo Simulado
+            </Button>
+          </div>
         </div>
       </div>
     );
