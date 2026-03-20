@@ -1,11 +1,11 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { bancoCompleto, type Questao, type ErroSessao } from "@/data/questoes";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { optionButtonClass, optionCorrectClass, optionWrongClass } from "@/components/AppButton";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
-import { ArrowRight, RotateCcw, Trophy, XCircle, CheckCircle2, Crosshair, Download } from "lucide-react";
+import { ArrowRight, RotateCcw, Trophy, XCircle, CheckCircle2, Crosshair, Download, Clock } from "lucide-react";
 import { jsPDF } from "jspdf";
 
 type SimuladoState = "idle" | "running" | "feedback" | "result";
@@ -19,6 +19,37 @@ export default function SimuladoPage() {
   const [selected, setSelected] = useState<string | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [numQuestoes, setNumQuestoes] = useState(20);
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [timerActive, setTimerActive] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // OAB: ~3 min per question
+  const getTimeForQuestions = (n: number) => n * 3 * 60; // seconds
+
+  useEffect(() => {
+    if (timerActive && timeLeft > 0) {
+      timerRef.current = setInterval(() => {
+        setTimeLeft(t => {
+          if (t <= 1) {
+            setTimerActive(false);
+            setState("result");
+            return 0;
+          }
+          return t - 1;
+        });
+      }, 1000);
+      return () => { if (timerRef.current) clearInterval(timerRef.current); };
+    }
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [timerActive, timeLeft]);
+
+  const formatTime = (s: number) => {
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const sec = s % 60;
+    if (h > 0) return `${h}:${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+    return `${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+  };
 
   const hero = useScrollReveal();
 
@@ -34,6 +65,8 @@ export default function SimuladoPage() {
     setErros([]);
     setSelected(null);
     setShowFeedback(false);
+    setTimeLeft(getTimeForQuestions(numQuestoes));
+    setTimerActive(true);
     setState("running");
   }, [numQuestoes]);
 
@@ -52,6 +85,7 @@ export default function SimuladoPage() {
 
   const proxima = () => {
     if (index + 1 >= questoes.length) {
+      setTimerActive(false);
       setState("result");
     } else {
       setIndex(i => i + 1);
@@ -137,6 +171,10 @@ export default function SimuladoPage() {
                   </button>
                 ))}
               </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                <Clock className="inline h-3 w-3 mr-1" />
+                Tempo: {formatTime(getTimeForQuestions(numQuestoes))} (~3 min/questão, padrão OAB)
+              </p>
             </CardContent>
           </Card>
 
@@ -212,14 +250,22 @@ export default function SimuladoPage() {
   // Running state
   return (
     <div className="p-6 md:p-10 max-w-3xl mx-auto">
-      {/* Progress header */}
+      {/* Timer + Progress header */}
       <div className="flex items-center justify-between mb-2">
         <p className="text-xs text-muted-foreground font-mono">
           Questão {index + 1}/{questoes.length}
         </p>
-        <p className="text-xs text-muted-foreground tabular-nums">
-          {acertos} acertos · {erros.length} erros
-        </p>
+        <div className="flex items-center gap-4">
+          <p className="text-xs text-muted-foreground tabular-nums">
+            {acertos} acertos · {erros.length} erros
+          </p>
+          <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md font-mono text-xs tabular-nums ${
+            timeLeft < 300 ? "bg-destructive/15 text-destructive animate-pulse-bar" : "bg-secondary text-foreground"
+          }`}>
+            <Clock className="h-3 w-3" />
+            {formatTime(timeLeft)}
+          </div>
+        </div>
       </div>
       <Progress value={((index + 1) / questoes.length) * 100} className="h-1.5 mb-6" />
 
