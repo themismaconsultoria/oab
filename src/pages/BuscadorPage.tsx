@@ -4,7 +4,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
-import { Search, FileText } from "lucide-react";
+import { Search, FileText, Download } from "lucide-react";
+import { exportarQuestoesPDF } from "@/lib/pdf-export";
 
 export default function BuscadorPage() {
   const [termo, setTermo] = useState("");
