@@ -112,7 +112,7 @@ export default function SimuladoPage() {
     doc.save("simulado-jurisvision.pdf");
   };
 
-
+  if (state === "idle") {
     return (
       <div className="p-6 md:p-10 max-w-3xl mx-auto">
         <div ref={hero.ref} style={hero.style}>
