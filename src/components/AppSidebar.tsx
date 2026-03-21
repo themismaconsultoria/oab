@@ -31,15 +31,30 @@ export function AppSidebar() {
       <SidebarContent className="pt-6">
         <div className="px-4 mb-8">
           {!collapsed ? (
-            <div className="flex items-center gap-2">
-              <Scale className="h-7 w-7 text-primary" />
+            <div className="flex items-center gap-3">
+              {/* USANDO O LINK "SUPER SEGURO" DO GITHUB */}
+              <img 
+                src="https://raw.githubusercontent.com/oab-prog/oab/main/logo.png" 
+                alt="Logo JurisVision" 
+                className="h-9 w-9 object-contain"
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
               <div>
-                <h2 className="text-lg font-bold text-foreground tracking-tight">JurisVision</h2>
-                <p className="text-[10px] text-muted-foreground tracking-widest uppercase">OAB Prep</p>
+                <h2 className="text-sm font-bold text-foreground tracking-tight leading-none mb-1">
+                  JurisVision OAB
+                </h2>
+                <p className="text-[9px] text-muted-foreground tracking-widest uppercase font-medium">
+                  By SoftGestão
+                </p>
               </div>
             </div>
           ) : (
-            <Scale className="h-7 w-7 text-primary mx-auto" />
+            <img 
+              src="https://raw.githubusercontent.com/oab-prog/oab/main/logo.png" 
+              alt="Logo" 
+              className="h-8 w-8 mx-auto object-contain"
+              onError={(e) => { e.currentTarget.style.display = 'none'; }}
+            />
           )}
         </div>
 
