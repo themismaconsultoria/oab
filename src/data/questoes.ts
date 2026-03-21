@@ -5678,4 +5678,41 @@ const perguntas: Questao[] = [
   },
 ];
 
+export const bancoCompleto: Questao[] = perguntas;
+
+export const bancoEstrategico: Questao[] = bancoCompleto.filter(q => q.estrategica);
+
+export const getEstatisticasTema = (): Record<string, number> => {
+  const stats: Record<string, number> = {};
+  bancoEstrategico.forEach(q => {
+    stats[q.tema] = (stats[q.tema] || 0) + 1;
+  });
+  return stats;
+};
+
+export const getTopTemas = (n: number = 7): [string, number][] => {
+  const stats = getEstatisticasTema();
+  return Object.entries(stats)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, n);
+};
+
+export const missoes = [
+  "Realizar 15 questões de ÉTICA PROFISSIONAL focadas em Direitos do Advogado.",
+  "Foco em ÉTICA: resolver 10 questões sobre Infrações e Sanções Disciplinares.",
+  "Missão ÉTICA: dominar as regras de Publicidade e Honorários Advocatícios.",
+  "Focar em DIREITO CIVIL: resolver 15 questões sobre Direito de Família e Sucessões.",
+  "Dia de DIREITO CIVIL: revisar Contratos em Espécie e fazer 10 questões.",
+  "Foco em PROCESSO CIVIL: dominar a sistemática de Recursos (Apelação e Agravos).",
+  "Missão PROCESSO CIVIL: focar em Tutelas Provisórias de Urgência e Evidência.",
+  "Dia de DIREITO PENAL: focar na Teoria do Crime (Dolo, Culpa e Excludentes).",
+  "Dia de PROCESSO PENAL: focar em Prisões (Preventiva e Temporária) e Liberdade Provisória.",
+  "Maratona DIREITO DO TRABALHO: dominar as regras de Jornada de Trabalho e Horas Extras.",
+  "Direito Constitucional: focar 100% em Controle de Constitucionalidade.",
+  "Dia de DIREITO ADMINISTRATIVO: dominar a Nova Lei de Licitações (Lei 14.133).",
+  "Dia de DIREITO TRIBUTÁRIO: focar em Princípios e Limitações ao Poder de Tributar.",
+  "Treino de Resistência: realizar 30 questões seguidas no Simulado Real.",
+  "Simulado Express: fazer 10 questões rápidas e focar na justificativa dos erros.",
+];
+
 export default perguntas;
