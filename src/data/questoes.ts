@@ -6751,15 +6751,16 @@ Diante do fato, você, consultado(a) como advogado(a), ofereceu, corretamente, a
 
 export const bancoEstrategico = bancoCompleto.filter(q => q.estrategica);
 
-export function getEstatisticasTema(tema: string) {
-  const q = bancoCompleto.filter(t => t.tema === tema);
-  return { total: q.length, estrategicas: q.filter(x => x.estrategica).length };
-}
-
-export function getTopTemas(n: number) {
+export function getEstatisticasTema(): Record<string, number> {
   const map: Record<string, number> = {};
   bancoCompleto.forEach(q => { map[q.tema] = (map[q.tema] || 0) + 1; });
-  return Object.entries(map).sort((a, b) => b[1] - a[1]).slice(0, n).map(([tema, qtd]) => ({ tema, qtd }));
+  return map;
+}
+
+export function getTopTemas(n: number): [string, number][] {
+  const map: Record<string, number> = {};
+  bancoCompleto.forEach(q => { map[q.tema] = (map[q.tema] || 0) + 1; });
+  return Object.entries(map).sort((a, b) => b[1] - a[1]).slice(0, n);
 }
 
 export const missoes = [
